@@ -61,4 +61,37 @@ contract Create {
     )
 
 //--END OF vOTER
+
+    constructor (){
+        votingArbitrator = msg.sender;
 }
+    function setCandidate (address _address, string memory _age, string memory _name, string memory _image) public {
+        require(votingArbitrator == msg.sender, "only Arbitrator can create set candidates."); 
+        
+        _candidateId.incriment();
+
+        uint256 idNum = _candidateId.current();
+
+        Candidate storage candidate = candidates[_address]
+
+        candidate.age = _age;
+        candidate.name = _name;
+        candidate.candidateId = idNum;
+        candidate.image = _image;
+        candidate.voteCount = 0;
+        candidate._address = _address;
+
+        candidateAddress.push(_address);
+
+        emit CreateCandidate(
+            idNum,
+            _age,
+            _name,
+            _image,
+            candidate.voteCount,
+            _address
+
+        )
+    }
+}
+
